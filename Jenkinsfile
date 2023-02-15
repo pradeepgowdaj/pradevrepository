@@ -1,27 +1,54 @@
-node
-{
-    stage "1. update the system/machine"
-    sh "sudo yum update -y"
-    
-    stage "2. Install java on mentioned machine"
-    sh "sudo yum install -y java"
-    
-    stage "3. create a folder"
-    sh "mkdir -p marketing"
-    
-    stage "4. create file"
-    sh "touch index.html"
-    
-    stage "5. add the content to the file"
-    writeFile file:"marketing/output.txt", text:"this is the outputfile created"
-    
-    stage "6. show the status"
-    echo "show the status of the files"
-    
-    stage "7. view date and time and uptime"
-    sh "date"
-    sh "uptime"
-    sh "free -m"
-    sh "df -h"
-    sh "ls -al"
+pipeline {
+    agent any 
+    stages {
+        stage ("1. install ansible pkg") {
+            steps {
+                sh "sudo amazon-linux-extras install -y ansible2"
+                sh "mkdir -p inbound"
+                sh "mkdir -p outbound"
+            }
+        }
+         stage ("2. service install") {
+            steps {
+                sh "sudo yum update -y"
+                sh "sudo yum install -y docker"
+            }
+        }
+        stage ("3. service start") {
+            steps {
+                sh "sudo systemctl restart docker"
+                sh "sudo systemctl enable docker"
+            }
+        }
+        stage ("4. ansible") {
+            steps {
+                sh "ansible --version"
+                sh "rpm -qa | grep ansible"
+            }
+        }
+        stage ("5. create file") {
+            steps {
+                sh "echo test.txt"
+                sh "date"
+                sh "cal"
+            }
+        }
+        stage ("6. add uptime") {
+            steps {
+                sh "echo test1.txt"
+                sh "date"
+                sh "cal"
+            }
+        }
+        stage ("7. get inside folder") {
+	    steps {
+	            sh "sudo chmod -R 777 /var/www/html/"
+                sh "cd /var/www/html/"
+                writeFile(file: "/var/www/html/index.html", text: "this is besant website", encoding: "UTF-8") 
+	     }
+        } 	
+    }
 }
+
+
+
