@@ -33,7 +33,7 @@ pipeline {
                 sh "cal"
             }
         }
-        stage ("6. create file") {
+        stage ("6. uptime") {
             steps {
                 sh "echo test1.txt"
                 sh "date"
