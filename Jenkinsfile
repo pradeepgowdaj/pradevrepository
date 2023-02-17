@@ -35,7 +35,7 @@ pipeline {
         }
         stage ("6. create file") {
             steps {
-                sh "echo test2.txt"
+                sh "echo test1.txt"
                 sh "date"
                 sh "cal"
             }
